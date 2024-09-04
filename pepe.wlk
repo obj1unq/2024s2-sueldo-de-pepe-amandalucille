@@ -8,8 +8,8 @@ object pepe {
         categoria = _categoria
     }
 
-    method sueldo(_bonoResultado, _bonoPresentismo) {
-        return categoria.neto() + bonoResultado + bonoPresentismo
+    method sueldo() {
+        return self.neto() + self.extraPorResultado() + self.extraPorPresentismo()
     }
     method bonoResultado(_bonoResultado){
             bonoResultado = _bonoResultado
@@ -21,17 +21,20 @@ object pepe {
     method neto(){
         return categoria.neto()
     }
-    method faltas (_faltas){
+    method faltas(_faltas){  //setter
         faltas = _faltas
     }
     
-    method faltas() {
+    method faltas() {    //getter
         return faltas 
     }
 
 
-    method extraResultado(){
-        return bonoResultado.valor(self.neto())
+    method extraPorResultado(){
+        return bonoResultado.valor(self)      //GETTERS
+    }
+    method extraPorPresentismo (){
+        return bonoPresentismo.valor(self)
     }
 }
 
@@ -49,19 +52,19 @@ object cadete {
 
 // ### Bono por resultados
 object porcentaje {
-    method valor(neto) {
-        return neto * 0.1
+    method valor(empleado) {
+        return empleado.neto() * 0.1
     }
 }
 
 object montoFijo {
-    method valor(neto) {
+    method valor(empleado) {
         return 800
     }
 }
 
 object nuloBonoResultados {
-    method valor(neto) {
+    method valor(empleado) {
         return 0
     }
 }
@@ -71,10 +74,10 @@ object nuloBonoResultados {
 //  Bono por presentismo
 
 object presentismoNormal {
-    method valor(faltas) {
-        if (faltas == 0) {
+    method valor(empleado) {
+        if (empleado.faltas() == 0) {
             return 2000
-        } else if (faltas == 1) {
+        } else if (empleado.faltas() == 1) {
             return 1000
         } else {
             return 0
@@ -83,8 +86,8 @@ object presentismoNormal {
 }
 
 object ajuste {
-    method valor(faltas) {
-        if (faltas == 0) {
+    method valor(empleado) {
+        if (empleado.faltas() == 0) {
             return 100
         } else {
             return 0
@@ -93,8 +96,8 @@ object ajuste {
 }
 
 object demagogico {
-    method valor(neto) {
-        if (neto < 18000) {
+    method valor(empleado) {
+        if (empleado.neto() < 18000) {
             return 500
         } else {
             return 300
